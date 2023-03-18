@@ -2,12 +2,24 @@
 
 class ArticlesRepository extends BaseRepository
 {
-    public function GetArticles()
+    public function GetArticles(bool $alphabetical = false, bool $publishedOnly = true)
     {
-        $sql = 'SELECT a.*, c.name as cat_name, ar.name, ar.surname FROM articles a
+        if ($publishedOnly) {
+            $sql = 'SELECT a.*, c.name as cat_name, ar.name, ar.surname FROM articles a
                     INNER JOIN categories c on c.id = a.cat_id
                     INNER JOIN authors ar on ar.id = a.author_id
-                    ORDER BY a.create_date DESC';
+                    WHERE a.published = true
+                    ';
+        } else {
+            $sql = 'SELECT a.*, c.name as cat_name, ar.name, ar.surname FROM articles a
+                    INNER JOIN categories c on c.id = a.cat_id
+                    INNER JOIN authors ar on ar.id = a.author_id
+                    ';
+        }
+        if ($alphabetical)
+            $sql = $sql . 'ORDER BY a.heading';
+        else
+            $sql = $sql . 'ORDER BY a.create_date DESC';
         return $this->db->SelectAll($sql);
     }
 
@@ -65,7 +77,7 @@ class ArticlesRepository extends BaseRepository
     public function UpdateArticle($id, $cat_id, $author_id, $heading, $intro, $content)
     {
         $sql = 'UPDATE articles SET cat_id = :cat_id, author_id = :author_id, heading = :heading, intro = :intro, content = :content
-    WHERE id = :id';
+                    WHERE id = :id';
         $params = [
             ':id' => $id,
             ':cat_id' => $cat_id,
@@ -84,5 +96,15 @@ class ArticlesRepository extends BaseRepository
             ':id' => $id,
         ];
         $this->db->Delete($sql, $params);
+    }
+
+    public function ChangePublished($id)
+    {
+        $sql = 'UPDATE articles set published = !published
+                    WHERE id = :id';
+        $params = [
+            ':id' => $id
+        ];
+        return $this->db->Update($sql, $params);
     }
 }
