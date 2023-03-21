@@ -48,7 +48,7 @@ $hd->Draw('articles');
                 <a class="no-underline" href="../Detail.php?id=<?= $article['id'] ?>"><h2 class="blog-post-title mb-1"><?= $article['heading'] ?> </h2></a>
                 <div class="row mb-2">
                     <p class="col blog-post-meta mb-0">
-                        <?= date_format(new DateTime($article['create_date']), 'd.m.Y H.i.s'); ?>
+                        <?= date_format(new DateTime($article['create_date']), 'd.m.Y H:i:s'); ?>
                         od
                         <a href="../AuthorArticles.php?id=<?= $article['author_id'] ?>"><?= $article['name'] . ' ' . $article['surname'] ?></a>
                     </p>

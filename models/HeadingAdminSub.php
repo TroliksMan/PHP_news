@@ -6,8 +6,8 @@ class HeadingAdminSub
     {
         $html = '
                 <header class="blog-header lh-1 py-3 bg-info px-5 ">
-                    <nav class="nav d-flex gap-5 justify-content-between align-items-baseline">
-                        <div class="d-flex fs-5">
+                    <nav class="nav d-flex justify-content-between align-items-baseline">
+                        <div class="d-flex fs-5 gap-4">
                             <a class="p-2 text-light no-underline"> ADMIN</a>
                         <a class="p-2 link-dark text-light no-underline articles" href="../Articles.php">Články</a>
                             <a class="p-2 link-dark text-light no-underline categories" href="../Categories.php">Kategorie</a>

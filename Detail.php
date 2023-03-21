@@ -53,7 +53,7 @@ $hd->Draw('XXX');
             <p class="mb-0 fst-italic text-muted"><?= $article['intro'] ?></p>
             <div class="row mt-2 mb-5">
                 <p class="col blog-post-meta mb-0">
-                    <?= date_format(new DateTime($article['create_date']), 'd.m.Y H.i.s'); ?>
+                    <?= date_format(new DateTime($article['create_date']), 'd.m.Y H:i:s'); ?>
                     od
                     <a href="AuthorArticles.php?id=<?= $article['author_id'] ?>"><?= $article['name'] . ' ' . $article['surname'] ?></a>
                 </p>
