@@ -1,4 +1,10 @@
 <?php
+session_start();
+if(!isset($_SESSION['user'])) {
+    Header('Location: ../../Index.php');
+    die();
+}
+
 require_once '../../models/HeadingAdminSub.php';
 if (isset($_POST['name'])) {
     require_once '../../models/Database.php';

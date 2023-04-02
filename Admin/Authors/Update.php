@@ -1,13 +1,19 @@
 <?php
+session_start();
+if(!isset($_SESSION['user'])) {
+    Header('Location: ../../Index.php');
+    die();
+}
+
 require_once '../../models/HeadingAdminSub.php';
 require_once '../../models/Database.php';
 require_once '../../models/BaseRepository.php';
-require_once '../../models/AuthorsRepository.php';
+require_once '../../models/AdminsRepository.php';
 $db = new Database();
-$auRep = new AuthorsRepository($db);
+$auRep = new AdminsRepository($db);
 if (isset($_GET['id'], $_POST['name'], $_POST['surname'])) {
 
-    $auRep->InsertAuthor($_POST['name'], $_POST['surname']);
+    $auRep->UpdateAuthor($_GET['id'], $_POST['name'], $_POST['surname']);
     Header('Location: ../Authors.php');
     die();
 } elseif (isset($_GET['id'])) {
@@ -54,11 +60,11 @@ $hd->Draw('authors');
             <div class="d-flex gap-5">
                 <label class="form-label col">
                     Jméno
-                    <input value="<?= $author['name']?>" required name="name" class="form-control" type="text">
+                    <input value="<?= $author['name'] ?>" required name="name" class="form-control" type="text">
                 </label>
                 <label class="form-label col">
                     Příjmení
-                    <input value="<?= $author['surname']?>" required name="surname" class="form-control" type="text">
+                    <input value="<?= $author['surname'] ?>" required name="surname" class="form-control" type="text">
                 </label>
             </div>
             <div class="buttons d-flex justify-content-between mt-3">

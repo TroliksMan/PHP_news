@@ -7,13 +7,13 @@ class ArticlesRepository extends BaseRepository
         if ($publishedOnly) {
             $sql = 'SELECT a.*, c.name as cat_name, ar.name, ar.surname FROM articles a
                     INNER JOIN categories c on c.id = a.cat_id
-                    INNER JOIN authors ar on ar.id = a.author_id
+                    INNER JOIN admins ar on ar.id = a.author_id
                     WHERE a.published = true
                     ';
         } else {
             $sql = 'SELECT a.*, c.name as cat_name, ar.name, ar.surname FROM articles a
                     INNER JOIN categories c on c.id = a.cat_id
-                    INNER JOIN authors ar on ar.id = a.author_id
+                    INNER JOIN admins ar on ar.id = a.author_id
                     ';
         }
         if ($alphabetical)
@@ -27,11 +27,11 @@ class ArticlesRepository extends BaseRepository
     {
         $sql = 'SELECT a.*, c.name as cat_name, ar.name, ar.surname FROM articles a
                     INNER JOIN categories c on c.id = a.cat_id
-                    INNER JOIN authors ar on ar.id = a.author_id
-                    WHERE a.cat_id = :id
+                    INNER JOIN admins ar on ar.id = a.author_id
+                    WHERE a.cat_id = :id AND published = true
                     ORDER BY a.create_date DESC';
         $params = [
-            'id' => $cat_id
+            ':id' => $cat_id
         ];
         return $this->db->SelectAll($sql, $params);
     }
@@ -40,11 +40,11 @@ class ArticlesRepository extends BaseRepository
     {
         $sql = 'SELECT a.*, c.name as cat_name ,ar.name, ar.surname FROM articles a
                     INNER JOIN categories c on c.id = a.cat_id
-                    INNER JOIN authors ar on ar.id = a.author_id
-                    WHERE a.author_id = :id
+                    INNER JOIN admins ar on ar.id = a.author_id
+                    WHERE a.author_id = :id AND published = true
                     ORDER BY a.create_date DESC';
         $params = [
-            'id' => $author_id
+            ':id' => $author_id
         ];
         return $this->db->SelectAll($sql, $params);
     }
@@ -53,7 +53,7 @@ class ArticlesRepository extends BaseRepository
     {
         $sql = 'SELECT a.*, c.name as cat_name, ar.name, ar.surname FROM articles a 
                     INNER JOIN categories c on c.id = a.cat_id
-                    INNER JOIN authors ar on ar.id = a.author_id                         
+                    INNER JOIN admins ar on ar.id = a.author_id                         
                     WHERE a.id = :id';
         $params = [
             ':id' => $id,

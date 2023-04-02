@@ -3,11 +3,11 @@ if (isset($_GET['id'])) {
     require_once 'models/Database.php';
     require_once 'models/BaseRepository.php';
     require_once 'models/ArticlesRepository.php';
-    require_once 'models/AuthorsRepository.php';
+    require_once 'models/AdminsRepository.php';
     require_once 'models/HeadingNormal.php';
     $db = new Database();
     $ar = new ArticlesRepository($db);
-    $cr = new AuthorsRepository($db);
+    $cr = new AdminsRepository($db);
 
     $author = $cr->GetAuthor($_GET['id']);
     if (!$author) {

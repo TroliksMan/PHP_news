@@ -1,11 +1,11 @@
 <?php
 require_once 'models/Database.php';
 require_once 'models/BaseRepository.php';
-require_once 'models/AuthorsRepository.php';
+require_once 'models/AdminsRepository.php';
 require_once 'models/HeadingNormal.php';
 $db = new Database();
 
-$ar = new AuthorsRepository($db);
+$ar = new AdminsRepository($db);
 $authors = $ar->GetAuthors();
 
 ?>

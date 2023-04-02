@@ -1,11 +1,17 @@
 <?php
+session_start();
+if(!isset($_SESSION['user'])) {
+    Header('Location: ../../Index.php');
+    die();
+}
+
 require_once '../../models/HeadingAdminSub.php';
 if (isset($_POST['name'], $_POST['surname'])) {
     require_once '../../models/Database.php';
     require_once '../../models/BaseRepository.php';
-    require_once '../../models/AuthorsRepository.php';
+    require_once '../../models/AdminsRepository.php';
     $db = new Database();
-    $auRep = new AuthorsRepository($db);
+    $auRep = new AdminsRepository($db);
     $auRep->InsertAuthor($_POST['name'], $_POST['surname']);
     Header('Location: ../Authors.php');
     die();

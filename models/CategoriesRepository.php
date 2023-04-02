@@ -34,7 +34,7 @@ class CategoriesRepository extends BaseRepository
                     WHERE id = :id';
         $params = [
             ':name' => $name,
-            'id' => $id,
+            ':id' => $id,
         ];
         return $this->db->Update($sql, $params);
     }
@@ -43,11 +43,13 @@ class CategoriesRepository extends BaseRepository
     {
         $sql = 'DELETE FROM categories WHERE id = :id';
         $params = [
-            'id' => $id
+            ':id' => $id
         ];
         $this->db->Delete($sql, $params);
     }
-    public function GetCount() {
+
+    public function GetCount()
+    {
         $sql = 'SELECT COUNT(ar.id) as article_count, ca.id, ca.name FROM categories ca
             LEFT JOIN articles ar on ar.cat_id = ca.id
             GROUP BY ca.id, ca.name';

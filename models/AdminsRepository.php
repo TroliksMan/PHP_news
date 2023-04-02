@@ -1,10 +1,10 @@
 <?php
 
-class AuthorsRepository extends BaseRepository
+class AdminsRepository extends BaseRepository
 {
     public function GetAuthor($id)
     {
-        $sql = 'SELECT * FROM authors
+        $sql = 'SELECT * FROM admins
                 WHERE id = :id';
         $params = [
             ':id' => $id,
@@ -14,14 +14,14 @@ class AuthorsRepository extends BaseRepository
 
     public function GetAuthors()
     {
-        $sql = 'SELECT * FROM authors
+        $sql = 'SELECT * FROM admins
                 ORDER BY name, surname';
         return $this->db->SelectAll($sql);
     }
 
     public function InsertAuthor($name, $surname)
     {
-        $sql = 'INSERT INTO authors (name, surname) VALUES  (:name, :surname)';
+        $sql = 'INSERT INTO admins (name, surname) VALUES  (:name, :surname)';
         $params = [
             ':name' => $name,
             ':surname' => $surname,
@@ -31,7 +31,7 @@ class AuthorsRepository extends BaseRepository
 
     public function UpdateAuthor($id, $name, $surname)
     {
-        $sql = 'UPDATE authors set name = :name, surname = :surname
+        $sql = 'UPDATE admins set name = :name, surname = :surname
                     WHERE id = :id';
         $params = [
             ':name' => $name,
@@ -43,7 +43,7 @@ class AuthorsRepository extends BaseRepository
 
     public function RemoveAuthor($id)
     {
-        $sql = 'DELETE FROM authors WHERE id = :id';
+        $sql = 'DELETE FROM admins WHERE id = :id';
         $params = [
             ':id' => $id
         ];
@@ -51,7 +51,7 @@ class AuthorsRepository extends BaseRepository
     }
 
     public function GetCount() {
-        $sql = 'SELECT COUNT(ar.id) as article_count, au.id, au.name, au.surname FROM authors au
+        $sql = 'SELECT COUNT(ar.id) as article_count, au.id, au.name, au.surname FROM admins au
             LEFT JOIN articles ar on ar.author_id = au.id
             GROUP BY au.id, au.name, au.surname ';
         return $this->db->SelectAll($sql);
