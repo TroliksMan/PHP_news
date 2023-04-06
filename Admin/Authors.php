@@ -1,9 +1,11 @@
 <?php
 session_start();
-if(!isset($_SESSION['user'])) {
+if (!isset($_SESSION['user'])) {
     Header('Location: ../Index.php');
     die();
 }
+$isAdmin = $_SESSION['user']['isAdmin'];
+$id = $_SESSION['user']['id'];
 
 require_once '../models/HeadingAdmin.php';
 require_once '../models/Database.php';
@@ -46,9 +48,6 @@ $hd->Draw('authors');
     <div class="col-md-8 mb-5">
         <div class="py-4 mb-4 border-bottom d-flex justify-content-between">
             <h3 class="fst-italic">Všichni autoři</h3>
-            <div>
-                <a href="Authors/Add.php" class="btn btn-warning">Přidat autora</a>
-            </div>
         </div>
         <?php foreach ($authors as $author): ?>
             <div class="blog-post">
@@ -59,11 +58,18 @@ $hd->Draw('authors');
                     </p>
                 </div>
                 <div class="d-flex justify-content-end gap-3">
-                    <a class="no-underline" href="../AuthorArticles.php?id=<?= $author['id'] ?>">Zobrazit příspěvky autora</a>
-                    <a class="no-underline" href="Authors/Update.php?id=<?= $author['id'] ?>">Upravit</a>
-                    <a class="no-underline" href="Authors/Delete.php?id=<?= $author['id'] ?>">Smazat</a>
+                    <?php if ($isAdmin): ?>
+                        <a class="no-underline"
+                           href="Authors/ChangeAdmin.php?id=<?= $author['id'] ?>"><?= $author['isAdmin'] ? 'Odebrat' : 'Dát' ?>
+                            administrátora</a>
+                    <?php endif; ?>
+                    <a class="no-underline" href="../AuthorArticles.php?id=<?= $author['id'] ?>">Zobrazit příspěvky</a>
+                    <?php if ($isAdmin || $id == $author['id']): ?>
+                        <a class="no-underline" href="Authors/Update.php?id=<?= $author['id'] ?>">Upravit</a>
+                        <a class="no-underline" href="Authors/Delete.php?id=<?= $author['id'] ?>">Smazat</a>
+                    <?php endif; ?>
                 </div>
-                <?php if(isset($_GET['id']) && $_GET['id'] == $author['id']): ?>
+                <?php if (isset($_GET['id']) && $_GET['id'] == $author['id']): ?>
                     <div class="text-danger text-end fst-italic fw-bold">Nelze smazat! Autor má články.</div>
                 <?php endif; ?>
                 <hr class="mb-5">

@@ -1,17 +1,20 @@
 <?php
 session_start();
-if(!isset($_SESSION['user'])) {
+if (!isset($_SESSION['user'])) {
     Header('Location: ../Index.php');
     die();
 }
-var_dump($_SESSION['user']);
+$isAdmin = $_SESSION['user']['isAdmin'];
+$id = $_SESSION['user']['id'];
+
 require_once '../models/HeadingAdmin.php';
 require_once '../models/Database.php';
 require_once '../models/BaseRepository.php';
 require_once '../models/ArticlesRepository.php';
+
 $db = new Database();
 $ar = new ArticlesRepository($db);
-$articles = $ar->GetArticles(true,false);
+$articles = $ar->GetArticles(true, false);
 ?>
 
 <!doctype html>
@@ -51,7 +54,8 @@ $hd->Draw('articles');
         </div>
         <?php foreach ($articles as $article): ?>
             <article class="blog-post">
-                <a class="no-underline" href="../Detail.php?id=<?= $article['id'] ?>"><h2 class="blog-post-title mb-1"><?= $article['heading'] ?> </h2></a>
+                <a class="no-underline" href="../Detail.php?id=<?= $article['id'] ?>"><h2
+                            class="blog-post-title mb-1"><?= $article['heading'] ?> </h2></a>
                 <div class="row mb-2">
                     <p class="col blog-post-meta mb-0">
                         <?= date_format(new DateTime($article['create_date']), 'd.m.Y H:i:s'); ?>
@@ -65,14 +69,18 @@ $hd->Draw('articles');
                 </div>
                 <p class="mb-0"><?= $article['intro'] ?></p>
                 <div class="d-flex pt-2">
-                    <div class="col">
-                        <a class="no-underline btn btn-sm btn-secondary"
-                           href="Articles/ChangePublished.php?id=<?= $article['id'] ?>"> <?= $article['published'] == 0 ? 'Zveřejnit' : 'Odveřejnit' ?></a>
-                    </div>
+                    <?php if ($isAdmin || $id == $article['author_id']): ?>
+                        <div class="col">
+                            <a class="no-underline btn btn-sm btn-secondary"
+                               href="Articles/ChangePublished.php?id=<?= $article['id'] ?>"> <?= $article['published'] == 0 ? 'Zveřejnit' : 'Odveřejnit' ?></a>
+                        </div>
+                    <?php endif; ?>
                     <div class="col d-flex justify-content-end gap-3">
                         <a class="no-underline" href="../Detail.php?id=<?= $article['id'] ?>">Náhled</a>
-                        <a class="no-underline" href="Articles/Update.php?id=<?= $article['id'] ?>">Upravit</a>
-                        <a class="no-underline" href="Articles/Delete.php?id=<?= $article['id'] ?>">Smazat</a>
+                        <?php if ($isAdmin || $id == $article['author_id']): ?>
+                            <a class="no-underline" href="Articles/Update.php?id=<?= $article['id'] ?>">Upravit</a>
+                            <a class="no-underline" href="Articles/Delete.php?id=<?= $article['id'] ?>">Smazat</a>
+                        <?php endif; ?>
                     </div>
                 </div>
                 <hr class="mb-5">

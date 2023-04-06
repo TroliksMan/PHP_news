@@ -51,9 +51,19 @@ class AdminsRepository extends BaseRepository
     }
 
     public function GetCount() {
-        $sql = 'SELECT COUNT(ar.id) as article_count, au.id, au.name, au.surname FROM admins au
+        $sql = 'SELECT COUNT(ar.id) as article_count, au.id, au.name, au.surname, au.isAdmin FROM admins au
             LEFT JOIN articles ar on ar.author_id = au.id
             GROUP BY au.id, au.name, au.surname ';
         return $this->db->SelectAll($sql);
+    }
+
+    public function ChangeAdmin($id)
+    {
+        $sql = 'UPDATE admins set isAdmin = !isAdmin
+                    WHERE id = :id';
+        $params = [
+            ':id' => $id
+        ];
+        return $this->db->Update($sql, $params);
     }
 }

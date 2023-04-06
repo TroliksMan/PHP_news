@@ -4,13 +4,14 @@ if(!isset($_SESSION['user'])) {
     Header('Location: ../../Index.php');
     die();
 }
-
 require_once '../../models/HeadingAdminSub.php';
 require_once '../../models/Database.php';
 require_once '../../models/BaseRepository.php';
 require_once '../../models/ArticlesRepository.php';
 require_once '../../models/AdminsRepository.php';
 require_once '../../models/CategoriesRepository.php';
+require_once '../../models/AuthorizationService.php';
+
 $db = new Database();
 $auRep = new AdminsRepository($db);
 $caRep = new CategoriesRepository($db);
@@ -22,8 +23,15 @@ if (isset($_GET['id'],$_POST['author_id'], $_POST['cat_id'], $_POST['heading'], 
     $arRep->UpdateArticle($_GET['id'], $_POST['cat_id'], $_POST['author_id'], $_POST['heading'], $_POST['intro'], $_POST['content']);
     Header('Location: ../Articles.php');
     die();
-
 } elseif (isset($_GET['id'])) {
+
+
+    $authService = new AuthorizationService($db);
+    if (!$authService->IsAuthorized($_SESSION['user']['id'], $_GET['id'])) {
+        Header('Location: ../Articles.php');
+        die();
+    }
+
     $authors = $auRep->GetAuthors();
     $categories = $caRep->GetCategories();
     $article = $arRep->GetArticleByID($_GET['id']);

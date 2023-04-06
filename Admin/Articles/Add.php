@@ -15,9 +15,9 @@ $db = new Database();
 $auRep = new AdminsRepository($db);
 $caRep = new CategoriesRepository($db);
 
-if (isset($_POST['author_id'], $_POST['cat_id'], $_POST['heading'], $_POST['intro'], $_POST['content'])) {
+if (isset($_POST['cat_id'], $_POST['heading'], $_POST['intro'], $_POST['content'])) {
     $arRep = new ArticlesRepository($db);
-    $arRep->InsertArticle($_POST['cat_id'], $_POST['author_id'], $_POST['heading'], $_POST['intro'], $_POST['content']);
+    $arRep->InsertArticle($_POST['cat_id'], $_SESSION['user']['id'], $_POST['heading'], $_POST['intro'], $_POST['content']);
     Header('Location: ../Articles.php');
     die();
 } else {
@@ -77,15 +77,6 @@ $hd->Draw('articles');
                         <option selected value="" disabled>Vyberte kategorii</option>
                         <?php foreach ($categories as $category): ?>
                             <option value="<?= $category['id'] ?>"><?= $category['name'] ?></option>
-                        <?php endforeach; ?>
-                    </select>
-                </label>
-                <label class="form-label col">
-                    Autor
-                    <select required class="form-control" name="author_id">
-                        <option selected value="" disabled>Vyberte autora</option>
-                        <?php foreach ($authors as $author): ?>
-                            <option value="<?= $author['id'] ?>"><?= $author['name'] . ' ' . $author['surname'] ?></option>
                         <?php endforeach; ?>
                     </select>
                 </label>

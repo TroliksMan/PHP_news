@@ -4,7 +4,8 @@ class HeadingNormal
 {
     public function Draw($className)
     {
-        session_start();
+        if (!isset($_SESSION))
+            session_start();
         $html = '
                 <header class="blog-header lh-1 py-3 bg-primary px-5 ">
                     <nav class="nav d-flex justify-content-between align-items-baseline">

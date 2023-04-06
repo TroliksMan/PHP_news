@@ -4,7 +4,10 @@ if(!isset($_SESSION['user'])) {
     Header('Location: ../../Index.php');
     die();
 }
-
+iF(!$_SESSION['user']['isAdmin']){
+    Header('Location: ../Categories.php');
+    die();
+}
 require_once '../../models/HeadingAdminSub.php';
 require_once '../../models/Database.php';
 require_once '../../models/BaseRepository.php';

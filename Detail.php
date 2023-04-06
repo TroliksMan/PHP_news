@@ -4,6 +4,8 @@ if (isset($_GET['id'])) {
     require_once 'models/BaseRepository.php';
     require_once 'models/ArticlesRepository.php';
     require_once 'models/HeadingNormal.php';
+    require_once 'models/AuthorizationService.php';
+
     $db = new Database();
     $ar = new ArticlesRepository($db);
     $article = $ar->GetArticleByID($_GET['id']);
@@ -11,6 +13,14 @@ if (isset($_GET['id'])) {
         header('Location: index.php');
         die();
     }
+    $canEdit = false;
+    session_start();
+    if (isset($_SESSION['user'])) {
+        $authService = new AuthorizationService($db);
+        $canEdit = $authService->IsAuthorized($_SESSION['user']['id'], $_GET['id']);
+    }
+
+
 } else {
     header('Location: index.php');
     die();
@@ -65,6 +75,12 @@ $hd->Draw('XXX');
             <div class="content">
                 <?= $article['content'] ?>
             </div>
+            <?php if ($canEdit): ?>
+                <div class="control pt-5">
+                    <a class="text-black link" href="Admin/Articles/Update.php?id=<?= $_GET['id'] ?>">Upravit</a>
+                    <a class="text-black link" href="Admin/Articles/Delete.php?id=<?= $_GET['id'] ?>">Smazat</a>
+                </div>
+            <?php endif; ?>
         </article>
     </div>
 </main>

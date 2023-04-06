@@ -1,10 +1,10 @@
 <?php
 session_start();
-if(!isset($_SESSION['user'])) {
+if (!isset($_SESSION['user'])) {
     Header('Location: ../Index.php');
     die();
 }
-
+$isAdmin = $_SESSION['user']['isAdmin'];
 require_once '../models/HeadingAdmin.php';
 require_once '../models/Database.php';
 require_once '../models/BaseRepository.php';
@@ -46,24 +46,29 @@ $hd->Draw('categories');
     <div class="col-md-8 mb-5">
         <div class="py-4 mb-4 border-bottom d-flex justify-content-between">
             <h3 class="fst-italic">Všechny kategorie</h3>
-            <div>
-                <a href="Categories/Add.php" class="btn btn-warning">Přidat kategorii</a>
-            </div>
+            <?php if ($isAdmin): ?>
+                <div>
+                    <a href="Categories/Add.php" class="btn btn-warning">Přidat kategorii</a>
+                </div>
+            <?php endif; ?>
         </div>
         <?php foreach ($categories as $category): ?>
             <div class="blog-post">
-                <h2 class="blog-post-title mb-1"><?= $category['name']?> </h2>
+                <h2 class="blog-post-title mb-1"><?= $category['name'] ?> </h2>
                 <div class="row mb-2">
                     <p class="col blog-post-meta mb-0">
                         Počet článků: <?= $category['article_count'] ?>
                     </p>
                 </div>
                 <div class="d-flex justify-content-end gap-3">
-                    <a class="no-underline" href="../CategoryArticles.php?id=<?= $category['id'] ?>">Zobrazit příspěvky kategorie</a>
-                    <a class="no-underline" href="Categories/Update.php?id=<?= $category['id'] ?>">Upravit</a>
-                    <a class="no-underline" href="Categories/Delete.php?id=<?= $category['id'] ?>">Smazat</a>
+                    <a class="no-underline" href="../CategoryArticles.php?id=<?= $category['id'] ?>">Zobrazit příspěvky
+                        kategorie</a>
+                    <?php if ($isAdmin): ?>
+                        <a class="no-underline" href="Categories/Update.php?id=<?= $category['id'] ?>">Upravit</a>
+                        <a class="no-underline" href="Categories/Delete.php?id=<?= $category['id'] ?>">Smazat</a>
+                    <?php endif; ?>
                 </div>
-                <?php if(isset($_GET['id']) && $_GET['id'] == $category['id']): ?>
+                <?php if (isset($_GET['id']) && $_GET['id'] == $category['id']): ?>
                     <div class="text-danger text-end fst-italic fw-bold">Nelze smazat! Kategorie má články.</div>
                 <?php endif; ?>
                 <hr class="mb-5">

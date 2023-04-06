@@ -42,4 +42,22 @@ class AuthorizationService extends BaseRepository
         ];
         return $this->db->Insert($sql, $params);
     }
+    public function IsAuthorized($idAuthor, $idArticle) {
+        $sql = 'SELECT * FROM admins
+                    WHERE id = :idAuthor';
+        $params = [
+          ":idAuthor" => $idAuthor
+        ];
+        $author = $this->db->SelectOne($sql, $params);
+        if ($author["isAdmin"])
+            return true;
+
+        $sql = 'SELECT * FROM articles
+                    WHERE id = :idArt AND author_id = :idAut';
+        $params = [
+          ":idArt" => $idArticle,
+          ":idAut" => $idAuthor
+        ];
+        return $this->db->SelectOne($sql, $params);
+    }
 }

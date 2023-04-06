@@ -4,6 +4,10 @@ if(!isset($_SESSION['user'])) {
     Header('Location: ../../Index.php');
     die();
 }
+iF(!$_SESSION['user']['isAdmin']){
+    Header('Location: ../Categories.php');
+    die();
+}
 
 require_once '../../models/HeadingAdminSub.php';
 if (isset($_POST['name'])) {

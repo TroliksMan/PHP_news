@@ -1,7 +1,15 @@
 <?php
 session_start();
-if(!isset($_SESSION['user'])) {
+if (!isset($_SESSION['user'])) {
     Header('Location: ../../Index.php');
+    die();
+}
+if (!isset($_GET['id'])) {
+    Header('Location: ../Authors.php');
+    die();
+}
+if ($_GET['id'] != $_SESSION['user']['id'] && !$_SESSION['user']['isAdmin']) {
+    Header('Location: ../Authors.php');
     die();
 }
 
@@ -18,9 +26,6 @@ if (isset($_GET['id'], $_POST['name'], $_POST['surname'])) {
     die();
 } elseif (isset($_GET['id'])) {
     $author = $auRep->GetAuthor($_GET['id']);
-} else {
-    Header('Location: ../Authors.php');
-    die();
 }
 ?>
 <!doctype html>
