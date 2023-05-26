@@ -2,10 +2,10 @@
 
 class Database
 {
-    const HOST = 'mysqlstudenti.litv.sssvt.cz';
-    const DBNAME = '4b2_stankomichal_db1';
-    const USER = 'stankomichal';
-    const PASSWORD = '123456Ab';
+    const HOST = '%HOST%';
+    const DBNAME = '%DB_NAME%';
+    const USER = '%USERNAME%';
+    const PASSWORD = '%PASSWORD%';
 
     private $conn;
 
