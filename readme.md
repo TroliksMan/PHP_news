@@ -29,7 +29,7 @@ This repository contains a school project developed in PHP. The goal was to crea
 4. Launch a web server or use a development environment (e.g., XAMPP, WAMP) to host the project files.
 5. Access the project in your web browser.
 
-![Database diagram](https://raw.githubusercontent.com/TroliksMan/pvy_PHPNews/main/resources/diagram.png)
+![Database diagram](https://raw.githubusercontent.com/stankomichal/PHP_News/main/resources/diagram.png)
 
 ## Usage
 
